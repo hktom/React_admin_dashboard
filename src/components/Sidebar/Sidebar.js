@@ -32,7 +32,7 @@ function Sidebar({ color, image, routes }) {
       <div
         className="sidebar-background"
         style={{
-          backgroundImage: "url(" + image + ")",
+          //backgroundImage: "url(" + image + ")",
         }}
       />
       <div className="sidebar-wrapper">
@@ -41,16 +41,14 @@ function Sidebar({ color, image, routes }) {
             href="https://www.creative-tim.com?ref=lbd-sidebar"
             className="simple-text logo-mini mx-1"
           >
-            <div className="logo-img">
+            <div className="pt-3">
               <img
-                src={require("assets/img/reactlogo.png").default}
+                src={require("assets/img/KDA-logo.png").default}
                 alt="..."
               />
             </div>
           </a>
-          <a className="simple-text" href="http://www.creative-tim.com">
-            Creative Tim
-          </a>
+         
         </div>
         <Nav>
           {routes.map((prop, key) => {

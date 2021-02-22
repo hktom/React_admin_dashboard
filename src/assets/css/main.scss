@@ -1,0 +1,15 @@
+.card-apprenant{
+    width: 200px;
+    .img-apprenant{
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+    }
+    .name-apprenant{
+        font-weight: bold;
+        margin: 5px 0px;
+    }
+    .title-apprenant{
+        color: #86909F;
+    }
+}
