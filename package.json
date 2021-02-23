@@ -1,6 +1,4 @@
 {
-  "name": "light-bootstrap-dashboard-react",
-  "version": "2.0.0",
   "dependencies": {
     "@fortawesome/fontawesome-free": "5.15.2",
     "axios": "^0.21.1",
@@ -18,6 +16,8 @@
     "react-router": "5.2.0",
     "react-router-dom": "5.2.0",
     "react-scripts": "4.0.1",
+    "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0"
   },
   "optionalDependencies": {

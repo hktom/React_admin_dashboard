@@ -3,7 +3,7 @@ import { serverHttp } from "./config";
 
 export const getApprenants = (action) => async (dispatch) => {
   try {
-    const res = await axios.get(`${serverHttp}/apprenant`);
+    const res = await axios.get(`${serverHttp}/apprenants`);
     dispatch({
       type: action,
       payload: res.data,

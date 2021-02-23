@@ -3,8 +3,8 @@ import apprenantReducer from './reducer/apprenantReducer';
 import userReducer from './reducer/userReducer';
 
 const RootReducer = combineReducers({
-    apprenantReducer : ReducerArticle,
-    userReducer : ReducerArticleDesk,
+    apprenantReducer : apprenantReducer,
+    userReducer : userReducer,
 }) 
 
 export default RootReducer;
