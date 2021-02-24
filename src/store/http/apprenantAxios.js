@@ -6,8 +6,9 @@ export const getApprenants = (action) => async (dispatch) => {
     const res = await axios.get(`${serverHttp}/apprenants`);
     dispatch({
       type: action,
-      payload: res.data,
+      payload: res.data.data,
     });
+    //console.log(res.data.data);
   } catch (err) {
     console.error(err.toString());
   }

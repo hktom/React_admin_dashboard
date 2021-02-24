@@ -1,22 +1,19 @@
-import React from "react";
-import ChartistGraph from "react-chartist";
+import React, {useState, useEffect} from "react";
+import { useSelector, useDispatch } from 'react-redux';
+import {getApprenants} from "../store/http/apprenantAxios";
+import {Container} from "react-bootstrap";
+//import ChartistGraph from "react-chartist";
 // react-bootstrap components
-import {
-  Badge,
-  Button,
-  Card,
-  Navbar,
-  Nav,
-  Table,
-  Container,
-  Row,
-  Col,
-  Form,
-  OverlayTrigger,
-  Tooltip,
-} from "react-bootstrap";
 
 function Dashboard() {
+
+  const apprenants = useSelector(state => state.apprenantReducer.list);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getApprenants('GET_APPRENANT'));
+  }, [dispatch]);
+
   return (
     <>
       <Container fluid>
@@ -25,17 +22,17 @@ function Dashboard() {
           src={require("../assets/img/dashboard.png").default}
           alt="..."
         />
-
+        
         <h2 className="py-4 px-5">Liste des apprénants</h2>
         <div className="d-flex justify-content-start px-5">
-          {[0, 1, 2, 4, 5, 7].map((item) => (
-            <div className="card-apprenant mx-4">
+          {apprenants.map((item, id) => (
+            <div key={id} className="card-apprenant mx-4">
               <img
                 src={require("../assets/img/lorem.jpg").default}
                 className="img-apprenant"
               />
-              <div className="name-apprenant">Josephine Kingombe</div>
-              <div className="title-apprenant">Developpeur Web</div>
+              <div className="name-apprenant">{item.nom_apprenant} {item.postnom_apprenant}</div>
+              <div className="title-apprenant">{item.nom_competence}</div>
             </div>
           ))}
         </div>
@@ -63,7 +60,7 @@ function Dashboard() {
             </tr>
             <tr>
               <th scope="row">3</th>
-              <td colspan="2">NODE JS</td>
+              <td>NODE JS</td>
               <td>15</td>
             </tr>
           </tbody>
