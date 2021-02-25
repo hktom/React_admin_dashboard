@@ -3,7 +3,7 @@ import { serverHttp } from "./config";
 
 export const getCompetence = (action) => async (dispatch) => {
   try {
-    const res = await axios.get(`${serverHttp}/competence`);
+    const res = await axios.get(`${serverHttp}/api/competence`);
     dispatch({
       type: action,
       payload: res.data.data,

@@ -3,7 +3,7 @@ import { serverHttp } from "./config";
 
 export const getApprenants = (action) => async (dispatch) => {
   try {
-    const res = await axios.get(`${serverHttp}/apprenants`);
+    const res = await axios.get(`${serverHttp}/api/apprenant`);
     dispatch({
       type: action,
       payload: res.data.data,
@@ -16,7 +16,7 @@ export const getApprenants = (action) => async (dispatch) => {
 
 export const postApprenants = (action, payload) => async (dispatch) => {
   try {
-    const res = await axios.post(`${serverHttp}/apprenant`, {
+    const res = await axios.post(`${serverHttp}/api/apprenant`, {
       ...payload,
     });
     dispatch({
@@ -30,7 +30,7 @@ export const postApprenants = (action, payload) => async (dispatch) => {
 
 export const updateApprenants = (action, payload) => async (dispatch) => {
   try {
-    const res = await axios.post(`${serverHttp}/apprenant/update`, {
+    const res = await axios.post(`${serverHttp}/api/apprenant`, {
       ...payload,
     });
     dispatch({
@@ -44,7 +44,7 @@ export const updateApprenants = (action, payload) => async (dispatch) => {
 
 export const deleteApprenants = (action, payload) => async (dispatch) => {
   try {
-    const res = await axios.delete(`${serverHttp}/apprenant/delete`, {
+    const res = await axios.delete(`${serverHttp}/api/apprenant`, {
       ...payload,
     });
     dispatch({
