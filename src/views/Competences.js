@@ -13,7 +13,7 @@ import {
   Col,
 } from "react-bootstrap";
 
-function TableList() {
+function Competences() {
   return (
     <>
       <Container fluid>
@@ -158,4 +158,4 @@ function TableList() {
   );
 }
 
-export default TableList;
+export default Competences;

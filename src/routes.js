@@ -1,11 +1,8 @@
 import Dashboard from "views/Dashboard.js";
-import TableList from "views/TableList.js";
-import Icons from "views/Icons.js";
-import Typography from "views/Typography.js";
+import Competences from "views/Competences.js";
+import Apprenants from "views/Apprenant.js";
+import Promotions from "views/Promotions.js";
 import UserProfile from "views/UserProfile.js";
-import Maps from "views/Maps.js";
-import Notifications from "views/Notifications.js";
-import Upgrade from "views/Upgrade.js";
 import Add from "./views/apprenants/add";
 
 const dashboardRoutes = [
@@ -17,24 +14,24 @@ const dashboardRoutes = [
     layout: "/admin",
   },
   {
-    path: "/icons",
+    path: "/apprenants",
     name: "Apprenants",
     icon: "fas fa-graduation-cap",
-    component: Icons,
+    component: Apprenants,
     layout: "/admin",
   },
   {
-    path: "/table",
+    path: "/competences",
     name: "Competences",
     icon: "fas fa-chart-pie",
-    component: TableList,
+    component: Competences,
     layout: "/admin",
   },
   {
-    path: "/typography",
+    path: "/promotions",
     name: "Promotions",
     icon: 'fas fa-cubes',
-    component: Typography,
+    component: Promotions,
     layout: "/admin",
   },
   {

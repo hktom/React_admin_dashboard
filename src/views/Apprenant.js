@@ -15,7 +15,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getApprenants } from "../store/http/apprenantAxios";
 import { useLocation, NavLink } from "react-router-dom";
 
-function Icons() {
+function Apprenants() {
   const data = useSelector((state) => state.apprenantReducer.list);
   const dispatch = useDispatch();
 
@@ -100,4 +100,4 @@ function Icons() {
   );
 }
 
-export default Icons;
+export default Apprenants;

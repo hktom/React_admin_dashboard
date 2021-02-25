@@ -1,5 +1,5 @@
 let data = {
-  select_list: [],
+  select: [],
   list: [],
   current: [],
 };
@@ -9,7 +9,7 @@ const competenceReducer = (state = data, action) => {
     case "GET_COMPETENCE_SELECT":
       return {
         ...state,
-        select_list: action.payload,
+        select: action.payload,
       };
     case "GET_COMPETENCE":
       return {

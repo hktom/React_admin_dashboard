@@ -18,12 +18,21 @@ import { getCompetence } from "../../store/http/competenceAxios";
 import { getPromotion } from "../../store/http/promotionAxios";
 
 function Add() {
-  const competences = useSelector((state) => state.competenceReducer.list);
+  const competences = useSelector((state) => state.competenceReducer.select);
   const promotions = useSelector((state) => state.promotionReducer.list);
   const dispatch = useDispatch();
+  let [formData, setFormData] = useState({});
+
+  const handleChange = (e) => {
+    let _temp = {};
+    _temp[e.target.name] = e.target.value;
+    setFormData({ ...formData, ..._temp });
+    console.log(formData);
+  };
 
   useEffect(() => {
-    if (competences.length <= 0) dispatch(getCompetence("GET_COMPETENCE"));
+    if (competences.length <= 0)
+      dispatch(getCompetence("GET_COMPETENCE_SELECT"));
     if (promotions.length <= 0) dispatch(getPromotion("GET_PROMOTION"));
   }, [dispatch]);
 
@@ -42,19 +51,33 @@ function Add() {
                     <Col className="pr-1" md="5">
                       <Form.Group>
                         <label>Nom</label>
-                        <Form.Control type="text"></Form.Control>
+                        <Form.Control
+                          name="nom"
+                          type="text"
+                          value={formData.nom}
+                          onChange={handleChange}
+                        ></Form.Control>
                       </Form.Group>
                     </Col>
                     <Col className="px-1" md="3">
                       <Form.Group>
                         <label>Post-nom</label>
-                        <Form.Control type="text"></Form.Control>
+                        <Form.Control
+                          name="post_nom"
+                          value={formData.post_nom}
+                          type="text"
+                        ></Form.Control>
                       </Form.Group>
                     </Col>
                     <Col className="pl-1" md="4">
                       <Form.Group>
                         <label htmlFor="exampleInputEmail1">Prenom</label>
-                        <Form.Control type="text"></Form.Control>
+                        <Form.Control
+                          name="prenom"
+                          value={formData.prenom}
+                          type="text"
+                          onChange={handleChange}
+                        ></Form.Control>
                       </Form.Group>
                     </Col>
                   </Row>
@@ -62,7 +85,12 @@ function Add() {
                     <Col className="pl-1" md="6">
                       <Form.Group>
                         <label>Email</label>
-                        <Form.Control type="email"></Form.Control>
+                        <Form.Control
+                          name="email"
+                          value={formData.email}
+                          type="email"
+                          onChange={handleChange}
+                        ></Form.Control>
                       </Form.Group>
                     </Col>
 
@@ -129,7 +157,7 @@ function Add() {
                       <Form.Group>
                         <label htmlFor="exampleInputEmail1">Compétences</label>
                         <Form.Control as="select">
-                        {competences.map((item) => (
+                          {competences.map((item) => (
                             <option key={item.id_competence}>
                               {item.nom_competence}
                             </option>

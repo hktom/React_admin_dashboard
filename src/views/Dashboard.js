@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import {getApprenants} from "../store/http/apprenantAxios";
+import {get_competence_apprenant} from "../store/http/competenceAxios";
 import {Container} from "react-bootstrap";
 //import ChartistGraph from "react-chartist";
 // react-bootstrap components
@@ -8,10 +9,12 @@ import {Container} from "react-bootstrap";
 function Dashboard() {
 
   const apprenants = useSelector(state => state.apprenantReducer.list);
+  const competences = useSelector(state => state.competenceReducer.list);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getApprenants('GET_APPRENANT'));
+    dispatch(get_competence_apprenant('GET_COMPETENCE'));
   }, [dispatch]);
 
   return (
@@ -23,8 +26,8 @@ function Dashboard() {
           alt="..."
         />
         
-        <h2 className="py-4 px-5">Liste des apprénants</h2>
-        <div className="d-flex justify-content-start px-5">
+        <h4 className="py-4 px-1">Liste des apprénants</h4>
+        <div className="d-flex justify-content-start">
           {apprenants.map((item, id) => (
             <div key={id} className="card-apprenant mx-4">
               <img
@@ -37,8 +40,8 @@ function Dashboard() {
           ))}
         </div>
 
-        <h2 className="py-4 px-5">Top des compétences</h2>
-        <div className="px-5">
+        <h4 className="py-4 px-1">Top des compétences</h4>
+        <div className="px-1">
         <table className="table">
           <thead>
             <tr>
@@ -48,21 +51,16 @@ function Dashboard() {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>HTML 5</td>
-              <td>25</td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>CSS 3</td>
-              <td>17</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td>NODE JS</td>
-              <td>15</td>
-            </tr>
+            {
+              competences.map((item, index)=>(
+                <tr key={item.id_competence}>
+                <th scope="row">{index+1}</th>
+                <td>{item.nom_competence}</td>
+                <td>{item.count}</td>
+              </tr>    
+              ))
+            }
+            
           </tbody>
         </table>
         </div>

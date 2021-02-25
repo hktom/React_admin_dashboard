@@ -3,7 +3,7 @@ import { serverHttp } from "./config";
 
 export const getPromotion = (action) => async (dispatch) => {
   try {
-    const res = await axios.get(`${serverHttp}/promotion`);
+    const res = await axios.get(`${serverHttp}/api/promotion`);
     dispatch({
       type: action,
       payload: res.data.data,
