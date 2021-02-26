@@ -4,9 +4,13 @@ import { serverHttp } from "./config";
 export const getCompetence = (action) => async (dispatch) => {
   try {
     const res = await axios.get(`${serverHttp}/api/competence`);
+    let data_select=[];
+    res.data.data.map((item)=>{
+      data_select.push({value:item.id_competence, label:item.nom_competence});
+    });
     dispatch({
       type: action,
-      payload: res.data.data,
+      payload: data_select,
     });
     //console.log(res.data.data);
   } catch (err) {

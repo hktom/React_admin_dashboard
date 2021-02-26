@@ -1,27 +1,26 @@
-// import React from "react";
-// react-bootstrap components
-import {
-  Badge,
-  Button,
-  Card,
-  Form,
-  Navbar,
-  Nav,
-  Container,
-  Row,
-  Col,
-} from "react-bootstrap";
+import { Button, Card, Form, Container, Row, Col } from "react-bootstrap";
 
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getCompetence } from "../../store/http/competenceAxios";
 import { getPromotion } from "../../store/http/promotionAxios";
+import Select from "react-select";
+import ImageUploading from "react-images-uploading";
 
 function Add() {
   const competences = useSelector((state) => state.competenceReducer.select);
   const promotions = useSelector((state) => state.promotionReducer.list);
   const dispatch = useDispatch();
   let [formData, setFormData] = useState({});
+
+  const [images, setImages] = useState([]);
+  const maxNumber = 69;
+
+  const onChange = (imageList, addUpdateIndex) => {
+    // data for submit
+    console.log(imageList, addUpdateIndex);
+    setImages(imageList);
+  };
 
   const handleChange = (e) => {
     let _temp = {};
@@ -37,7 +36,7 @@ function Add() {
   }, [dispatch]);
 
   return (
-    <>
+    <div style={{ paddingBottom: 200 }}>
       <Container fluid>
         <Row>
           <Col md="8">
@@ -97,7 +96,7 @@ function Add() {
                     <Col className="pr-1" md="6">
                       <Form.Group>
                         <label htmlFor="exampleInputEmail1">Sexe</label>
-                        <Form.Control as="select">
+                        <Form.Control as="select" name="sex" onChange={handleChange}>
                           <option>M</option>
                           <option>F</option>
                         </Form.Control>
@@ -108,7 +107,12 @@ function Add() {
                     <Col md="12">
                       <Form.Group>
                         <label>Address</label>
-                        <Form.Control type="text"></Form.Control>
+                        <Form.Control
+                          type="text"
+                          name="adress"
+                          value={formData.adress}
+                          onChange={handleChange}
+                        ></Form.Control>
                       </Form.Group>
                     </Col>
                   </Row>
@@ -116,13 +120,23 @@ function Add() {
                     <Col className="pr-1" md="4">
                       <Form.Group>
                         <label>Télephone</label>
-                        <Form.Control type="mobile"></Form.Control>
+                        <Form.Control
+                          type="mobile"
+                          name="tel"
+                          value={formData.tel}
+                          onChange={handleChange}
+                        ></Form.Control>
                       </Form.Group>
                     </Col>
                     <Col className="px-1" md="4">
                       <Form.Group>
                         <label>Date de naissance</label>
-                        <Form.Control type="date"></Form.Control>
+                        <Form.Control
+                          type="date"
+                          name="date"
+                          value={formData.date}
+                          onChange={handleChange}
+                        ></Form.Control>
                       </Form.Group>
                     </Col>
                     <Col className="pl-1" md="4">
@@ -130,7 +144,12 @@ function Add() {
                         <label htmlFor="exampleInputEmail1">
                           Niveau d'étude
                         </label>
-                        <Form.Control as="select">
+                        <Form.Control
+                          as="select"
+                          name="niveau"
+                          value={formData.niveau}
+                          onChange={handleChange}
+                        >
                           <option>D6</option>
                           <option>Graduat</option>
                           <option>Licencié</option>
@@ -144,7 +163,12 @@ function Add() {
                     <Col className="pl-1" md="6">
                       <Form.Group>
                         <label htmlFor="exampleInputEmail1">Promotions</label>
-                        <Form.Control as="select">
+                        <Form.Control
+                          as="select"
+                          name="id_promotion_cohorte"
+                          value={formData.id_promotion_cohorte}
+                          onChange={handleChange}
+                        >
                           {promotions.map((item) => (
                             <option key={item.id_promotion_cohorte}>
                               {item.nom_promotion}
@@ -156,31 +180,17 @@ function Add() {
                     <Col className="pl-1" md="6">
                       <Form.Group>
                         <label htmlFor="exampleInputEmail1">Compétences</label>
-                        <Form.Control as="select">
-                          {competences.map((item) => (
-                            <option key={item.id_competence}>
-                              {item.nom_competence}
-                            </option>
-                          ))}
-                        </Form.Control>
+                        <Select
+                          options={competences}
+                          isMulti
+                          name="competences"
+                          className="basic-multi-select"
+                          classNamePrefix="select"
+                        />
                       </Form.Group>
                     </Col>
                   </Row>
-                  {/* <Row>
-                    <Col md="12">
-                      <Form.Group>
-                        <label>About Me</label>
-                        <Form.Control
-                          cols="80"
-                          defaultValue="Lamborghini Mercy, Your chick she so thirsty, I'm in
-                          that two seat Lambo."
-                          placeholder="Here can be your description"
-                          rows="4"
-                          as="textarea"
-                        ></Form.Control>
-                      </Form.Group>
-                    </Col>
-                  </Row> */}
+
                   <Button
                     className="btn-fill pull-right"
                     type="submit"
@@ -194,66 +204,56 @@ function Add() {
             </Card>
           </Col>
           <Col md="4">
+            {/* upload images */}
             <Card className="card-user">
-              <div className="card-image">
-                <img
-                  alt="..."
-                  src={
-                    require("assets/img/photo-1431578500526-4d9613015464.jpeg")
-                      .default
-                  }
-                ></img>
-              </div>
               <Card.Body>
-                <div className="author">
-                  <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                    <img
-                      alt="..."
-                      className="avatar border-gray"
-                      src={require("assets/img/faces/face-3.jpg").default}
-                    ></img>
-                    <h5 className="title">Mike Andrew</h5>
-                  </a>
-                  <p className="description">michael24</p>
-                </div>
-                <p className="description text-center">
-                  "Lamborghini Mercy <br></br>
-                  Your chick she so thirsty <br></br>
-                  I'm in that two seat Lambo"
-                </p>
+                <ImageUploading
+                  value={images}
+                  onChange={onChange}
+                  maxNumber={maxNumber}
+                  dataURLKey="data_url"
+                >
+                  {({
+                    imageList,
+                    onImageUpload,
+                    onImageUpdate,
+                    onImageRemove,
+                    
+                  }) => (
+                    // write your building UI
+                    <div className="upload__image-wrapper">
+                      {imageList.length <=0?(
+                        <div onClick={onImageUpload}>
+                        <img src={require("../../assets/img/placeholder.png").default} style={{width:'100%', cursor:'pointer'}}/>
+                        </div>
+                      ):(<div></div>)}
+
+                  
+                      {imageList.map((image, index) => (
+                        <div key={index} className="image-item">
+                          <div onClick={() => onImageUpdate(index)}>
+                          
+                          <img src={image["data_url"]} alt="" style={{width:'100%', cursor:'pointer', objectFit:'cover'}} />
+                          <i style={{fontSize:'0.7rem'}}>{image.file.name}</i>
+                          </div>
+
+                          <div>
+                            <button type="button" className="btn btn-danger mt-2" onClick={() => onImageRemove(index)}>
+                              Remove
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+
+                    </div>
+                  )}
+                </ImageUploading>
               </Card.Body>
-              <hr></hr>
-              <div className="button-container mr-auto ml-auto">
-                <Button
-                  className="btn-simple btn-icon"
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                  variant="link"
-                >
-                  <i className="fab fa-facebook-square"></i>
-                </Button>
-                <Button
-                  className="btn-simple btn-icon"
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                  variant="link"
-                >
-                  <i className="fab fa-twitter"></i>
-                </Button>
-                <Button
-                  className="btn-simple btn-icon"
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                  variant="link"
-                >
-                  <i className="fab fa-google-plus-square"></i>
-                </Button>
-              </div>
             </Card>
           </Col>
         </Row>
       </Container>
-    </>
+    </div>
   );
 }
 
