@@ -22,7 +22,10 @@ function Apprenants() {
   const [bulkDelete, setBulkDelete]=useState([]);
 
   const handleCheck=(e)=>{
-    console.log("check", e.target.name, e.target.value);
+    if(setBulkDelete.some(e.target.name))
+    setBulkDelete.push(e.target.name);
+    else
+    setBulkDelete.push(e.target.name);
   }
 
   useEffect(() => {
