@@ -4,6 +4,7 @@ import {
   Navbar,
   Nav,
   NavDropdown,
+  Form,
   Card,
   Container,
   Row,
@@ -18,6 +19,11 @@ import { useLocation, NavLink } from "react-router-dom";
 function Apprenants() {
   const data = useSelector((state) => state.apprenantReducer.list);
   const dispatch = useDispatch();
+  const [bulkDelete, setBulkDelete]=useState([]);
+
+  const handleCheck=(e)=>{
+    console.log("check", e.target.name, e.target.value);
+  }
 
   useEffect(() => {
     if (data.length <= 0) dispatch(getApprenants("GET_APPRENANT"));
@@ -36,30 +42,30 @@ function Apprenants() {
                     <div>
                       <Button variant="light" className="mx-1">
                         <NavLink
-                          to='/admin/apprenant/add'
+                          to="/admin/apprenant/add"
                           className="nav-link"
                           activeClassName="active"
                         >
-                          <i class="fas fa-plus"></i>
+                          <i className="fas fa-plus"></i>
                         </NavLink>
                       </Button>
-                      <Button variant="light" className="mx-1">
+                      {/* <Button variant="light" className="mx-1">
                         <NavLink
-                          to='/'
+                          to="/"
                           className="nav-link"
                           activeClassName="active"
                         >
-                          <i class="fas fa-pen"></i>
+                          <i className="fas fa-pen"></i>
                         </NavLink>
-                      </Button>
+                      </Button> */}
 
-                      <Button variant="light" className="mx-1">
+                      <Button variant="danger" className="mx-1">
                         <NavLink
-                          to='/'
+                          to="/"
                           className="nav-link"
                           activeClassName="active"
                         >
-                          <i class="fas fa-trash"></i>
+                          <i className="fas fa-trash"></i>
                         </NavLink>
                       </Button>
                     </div>
@@ -70,6 +76,7 @@ function Apprenants() {
                 <Table className="table-hover table-striped">
                   <thead>
                     <tr>
+                      <th></th>
                       <th className="border-0">Nom</th>
                       <th className="border-0">Post-nom</th>
                       <th className="border-0">Prenom</th>
@@ -80,7 +87,17 @@ function Apprenants() {
                   </thead>
                   <tbody>
                     {data.map((item) => (
-                      <tr>
+                      <tr key={item.id_apprenant} style={{cursor:'pointer'}}>
+                        <td>
+                          
+                            <Form.Check
+                              name={item.id_apprenant}
+                              onChange={handleCheck}
+                              id={ `check_${item.id_apprenant}`}
+                              type="checkbox"
+                            />
+                          
+                        </td>
                         <td>{item.nom_apprenant}</td>
                         <td>{item.postnom_apprenant}</td>
                         <td>{item.prenom_apprenant}</td>

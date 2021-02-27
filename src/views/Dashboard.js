@@ -31,11 +31,11 @@ function Dashboard() {
           {apprenants.map((item, id) => (
             <div key={id} className="card-apprenant mx-4">
               <img
-                src={require("../assets/img/lorem.jpg").default}
+                src={`http://127.0.0.1:8000/${item.photo_apprenant}`}
                 className="img-apprenant"
               />
-              <div className="name-apprenant">{item.nom_apprenant} {item.postnom_apprenant}</div>
-              <div className="title-apprenant">{item.nom_competence}</div>
+              <div className="name-apprenant">{item.nom_apprenant} {item.prenom_apprenant}</div>
+              <div className="title-apprenant">{item.nom_promotion}</div>
             </div>
           ))}
         </div>

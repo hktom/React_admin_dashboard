@@ -7,8 +7,7 @@ const ImageUploader = ({setImageUploaded}) => {
   const maxNumber = 69;
 
   const onChange = (imageList, addUpdateIndex) => {
-    console.log(imageList, addUpdateIndex);
-    setImageUploaded([imageList, addUpdateIndex]);
+    setImageUploaded(imageList[0]);
     setImages(imageList);
   };
 

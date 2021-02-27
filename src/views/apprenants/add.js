@@ -7,20 +7,18 @@ import { getPromotion } from "../../store/http/promotionAxios";
 import Select from "react-select";
 import NotificationAlert from "react-notification-alert";
 import ImageUploader from "../../components/imageUploader";
+import { postApprenants } from "../../store/http/apprenantAxios";
 
 function Add() {
   const notificationAlertRef = useRef(null);
-  const notify = (place) => {
-    var type = "info";
+  const notify = (place, status, message) => {
+    var type = status;
     var options = {};
     options = {
       place: place,
       message: (
         <div>
-          <div>
-            Welcome to <b>Light Bootstrap Dashboard React</b> - a beautiful
-            freebie for every web developer.
-          </div>
+          <div>{message}</div>
         </div>
       ),
       type: type,
@@ -33,26 +31,77 @@ function Add() {
   const competences = useSelector((state) => state.competenceReducer.select);
   const promotions = useSelector((state) => state.promotionReducer.list);
   const dispatch = useDispatch();
-  let [formData, setFormData] = useState({});
+  const [validated, setValidated] = useState(false);
+  const [formStatus, setFormStatus]=useState(false);
+
+  // champs du formulaire apprenant
+  let [NewApprenant, setNewApprenant] = useState({
+    nom: "",
+    post_nom: "",
+    prenom: "",
+    email: "",
+    sex: 0,
+    adress: "",
+    tel: "",
+    date: "",
+    niveau: 0,
+    id_promotion_cohorte: 0,
+    image_name:false,
+    competences: [],
+  });
   let [image, setImage] = useState({});
 
-
+  // changement d'un champs dans le formulaire
   const handleChange = (e) => {
     let _temp = {};
     _temp[e.target.name] = e.target.value;
-    setFormData({ ...formData, ..._temp });
+    setNewApprenant({ ...NewApprenant, ..._temp });
   };
 
-  const handleCompetenceChange=(e)=>{
+  // changement des comptences
+  const handleCompetenceChange = (e) => {
     let _temp = {};
-    _temp['competences'] = e;
-    setFormData({ ...formData, ..._temp });
-  }
+    _temp["competences"] = e;
+    setNewApprenant({ ...NewApprenant, ..._temp });
+  };
 
+  // Fonction responsable pour l'envoit du formulaire
   const sendForm = (e) => {
     e.preventDefault();
-    console.log(formData, image);
-    notify("tr");
+    setFormStatus(true);
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
+      setValidated(true);
+      notify("tr", "danger", "Veuillez remplir les champs");
+      setFormStatus(false);
+      return;
+    }
+
+
+    // verifier si l image est vide
+    if (Object.keys(image).length === 0) {
+      NewApprenant["image_name"] = `${NewApprenant.sex}.jpg`;
+    } else {
+      NewApprenant.image_name=false;
+      NewApprenant["image"] = image.data_url;
+      NewApprenant["file"] = {
+        name: image.file.name,
+        size: image.file.size,
+        type: image.file.type,
+        lastModified: image.file.lastModified,
+      };
+    }
+
+    if (NewApprenant.id_promotion_cohorte==0) {
+      notify("tr", "danger", "Veuillez choisir la promotion");
+    } else {
+      dispatch(postApprenants("ADD_APPRENANT", NewApprenant));
+      notify("tr", "success", "Données enregistrées");
+    }
+    console.log(NewApprenant);
+    setFormStatus(false);
   };
 
   useEffect(() => {
@@ -61,16 +110,19 @@ function Add() {
     if (promotions.length <= 0) dispatch(getPromotion("GET_PROMOTION"));
   }, [dispatch]);
 
-  const formField = (labelName, name, type) => {
+  const formField = (labelName, name, type, required) => {
     return (
       <Form.Group>
         <label>{labelName}</label>
         <Form.Control
+          disabled={formStatus}
+          required={required}
           name={name}
           type={type}
-          value={formData[name]}
+          value={NewApprenant[name]}
           onChange={handleChange}
         ></Form.Control>
+        <Form.Control.Feedback  type="invalid">Veuillez saisir une donnée du type {type}</Form.Control.Feedback>
       </Form.Group>
     );
   };
@@ -86,33 +138,37 @@ function Add() {
                 <Card.Title as="h4">Ajouter Apprenant</Card.Title>
               </Card.Header>
               <Card.Body>
-                <Form onSubmit={sendForm}>
+                <Form onSubmit={sendForm} noValidate validated={validated}>
                   <Row>
                     <Col className="pr-1" md="5">
-                      {formField("Nom", "nom", "text")}
+                      {formField("Nom", "nom", "text", true)}
                     </Col>
                     <Col className="px-1" md="3">
-                      {formField("Post-Nom", "post_nom", "text")}
+                      {formField("Post-Nom", "post_nom", "text", false)}
                     </Col>
                     <Col className="pl-1" md="4">
-                      {formField("Prenom", "prenom", "text")}
+                      {formField("Prenom", "prenom", "text", true)}
                     </Col>
                   </Row>
                   <Row>
                     <Col className="pl-3" md="6">
-                      {formField("Email", "email", "email")}
+                      {formField("Email", "email", "email", true)}
                     </Col>
 
                     <Col className="pr-3" md="6">
                       <Form.Group>
-                        <label htmlFor="exampleInputEmail1">Sexe</label>
+                        <label htmlFor="exampleInputEmail1">Genre</label>
                         <Form.Control
+                        disabled={formStatus}
+                          required
                           as="select"
                           name="sex"
                           onChange={handleChange}
+                          value={NewApprenant.sex}
                         >
-                          <option>M</option>
-                          <option>F</option>
+                          <option value={0}> Selectionner Genre</option>
+                          <option value="M">M</option>
+                          <option value="F">F</option>
                         </Form.Control>
                       </Form.Group>
                     </Col>
@@ -122,10 +178,10 @@ function Add() {
                   </Row>
                   <Row>
                     <Col className="pr-1" md="4">
-                      {formField("Télephone", "tel", "mobile")}
+                      {formField("Télephone", "tel", "mobile", false)}
                     </Col>
                     <Col className="px-1" md="4">
-                      {formField("Date de naissance", "date", "date")}
+                      {formField("Date de naissance", "date", "date", true)}
                     </Col>
                     <Col className="pl-1" md="4">
                       <Form.Group>
@@ -133,11 +189,17 @@ function Add() {
                           Niveau d'étude
                         </label>
                         <Form.Control
+                        disabled={formStatus}
                           as="select"
                           name="niveau"
-                          value={formData.niveau}
+                          value={NewApprenant.niveau}
                           onChange={handleChange}
+                          required
                         >
+                          <option value={0}>
+                            {" "}
+                            Selectionner Niveau d'étude
+                          </option>
                           <option>D6</option>
                           <option>Graduat</option>
                           <option>Licencié</option>
@@ -152,13 +214,19 @@ function Add() {
                       <Form.Group>
                         <label htmlFor="exampleInputEmail1">Promotions</label>
                         <Form.Control
+                          disabled={formStatus}
                           as="select"
                           name="id_promotion_cohorte"
-                          value={formData.id_promotion_cohorte}
+                          value={NewApprenant.id_promotion_cohorte}
                           onChange={handleChange}
+                          required
                         >
+                          <option value={0}> Selectionner promotion</option>
                           {promotions.map((item) => (
-                            <option key={item.id_promotion_cohorte}>
+                            <option
+                              value={item.id_promotion_cohorte}
+                              key={item.id_promotion_cohorte}
+                            >
                               {item.nom_promotion}
                             </option>
                           ))}
@@ -194,7 +262,7 @@ function Add() {
           </Col>
           <Col md="4">
             {/* upload images */}
-            <ImageUploader setImageUploaded={setImage}/>
+            <ImageUploader setImageUploaded={setImage} />
           </Col>
         </Row>
       </Container>

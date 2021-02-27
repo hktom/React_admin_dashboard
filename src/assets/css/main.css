@@ -17,4 +17,13 @@
 .card-apprenant .title-apprenant {
   color: #86909F;
 }
+
+.form-check input[type="checkbox"], .form-check-radio input[type="radio"] {
+  opacity: 1 !important;
+  position: absolute !important;
+  visibility:visible !important;
+}
+.btn{
+  padding: 0px !important;
+}
 /*# sourceMappingURL=main.css.map */

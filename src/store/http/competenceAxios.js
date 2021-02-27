@@ -22,13 +22,13 @@ export const get_competence_apprenant = (action) => async (dispatch) => {
   try {
     const res = await axios.get(`${serverHttp}/api/competence/apprenant`);
     let competences=[];
-    res.data.data.map((item, i)=>{
+    res.data.data.map((item)=>{
       let index=competences.findIndex((element)=>element.id_competence==item.id_competence);
       if(index!=-1) competences[index].count++;
+      else
       competences.push({...item,count:1});
+      
     });
-
-    console.log(competences);
 
     dispatch({
       type: action,
