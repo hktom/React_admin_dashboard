@@ -23,11 +23,6 @@ export const getApprenants = (action) => async (dispatch) => {
 
 export const postApprenants = (action, payload) => async (dispatch) => {
   try {
-    const config = {
-      headers: {
-        "content-type": "multipart/form-data",
-      },
-    };
     const res = await axios.post(
       `${serverHttp}/api/apprenant`,
       payload

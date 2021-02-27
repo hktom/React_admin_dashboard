@@ -22,10 +22,19 @@ function Apprenants() {
   const [bulkDelete, setBulkDelete]=useState([]);
 
   const handleCheck=(e)=>{
-    if(setBulkDelete.some(e.target.name))
-    setBulkDelete.push(e.target.name);
+    
+    if(bulkDelete.includes(e.target.name)){
+      setBulkDelete(bulkDelete.filter((item)=>item!=e.target.name));
+    }
     else
-    setBulkDelete.push(e.target.name);
+    {
+      setBulkDelete([...bulkDelete, e.target.name]);
+
+    }
+  }
+
+  const handleDelete=()=>{
+    console.log(bulkDelete);
   }
 
   useEffect(() => {
@@ -62,14 +71,14 @@ function Apprenants() {
                         </NavLink>
                       </Button> */}
 
-                      <Button variant="danger" className="mx-1">
-                        <NavLink
-                          to="/"
+                      <Button variant="danger" className="mx-1 py-5" onClick={handleDelete}>
+                      <NavLink
+                          to="#"
                           className="nav-link"
                           activeClassName="active"
                         >
                           <i className="fas fa-trash"></i>
-                        </NavLink>
+                          </NavLink>
                       </Button>
                     </div>
                   </div>

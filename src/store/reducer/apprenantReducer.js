@@ -1,15 +1,40 @@
 let data = {
   list: [],
   current: [],
+  status: 0,
 };
 
 const apprenantReducer = (state = data, action) => {
-
-    switch (action.type) {
+  switch (action.type) {
     case "GET_APPRENANT":
       return {
         ...state,
         list: action.payload,
+        status: action.status,
+      };
+
+    case "SET_STATUS_PENDING":
+      return {
+        ...state,
+        status: "pending",
+      };
+
+    case "POST_COMPETENCE":
+      return {
+        ...state,
+        status: action.status,
+      };
+
+    case "PUT_COMPETENCE":
+      return {
+        ...state,
+        status: action.status,
+      };
+
+    case "DELETE_COMPETENCE":
+      return {
+        ...state,
+        status: action.status,
       };
 
     case "FIND_APPRENANT":
@@ -22,12 +47,14 @@ const apprenantReducer = (state = data, action) => {
       return {
         ...state,
         current: action.payload,
+        status: action.status,
       };
 
     case "DELETE_APPRENANT":
       return {
         ...state,
         current: [],
+        status: action.status,
       };
 
     default:
