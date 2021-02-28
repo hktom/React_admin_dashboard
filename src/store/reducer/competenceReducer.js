@@ -1,20 +1,27 @@
 let data = {
-  select: [],
   list: [],
+  list_with_apprenant:[],
   current: [],
+  edit:{},
+  status:0,
 };
 
 const competenceReducer = (state = data, action) => {
   switch (action.type) {
-    case "GET_COMPETENCE_SELECT":
+    case "GET_COMPETENCE_WITH_APPRENANT":
       return {
         ...state,
-        select: action.payload,
+        list_with_apprenant: action.payload,
       };
     case "GET_COMPETENCE":
       return {
         ...state,
         list: action.payload,
+      };
+    case "POST_COMPETENCE":
+      return {
+        ...state,
+        status: action.payload,
       };
     default:
       return {

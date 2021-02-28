@@ -9,7 +9,7 @@ import NotificationAlert from "react-notification-alert";
 import ImageUploader from "../../components/imageUploader";
 import { postApprenants } from "../../store/http/apprenantAxios";
 
-function Add() {
+function AddApprenant() {
   const notificationAlertRef = useRef(null);
   const notify = (place, status, message) => {
     var type = status;
@@ -28,11 +28,12 @@ function Add() {
     notificationAlertRef.current.notificationAlert(options);
   };
 
-  const competences = useSelector((state) => state.competenceReducer.select);
+  const competences = useSelector((state) => state.competenceReducer.list);
   const promotions = useSelector((state) => state.promotionReducer.list);
   const dispatch = useDispatch();
   const [validated, setValidated] = useState(false);
   const [formStatus, setFormStatus]=useState(false);
+  const apprenant_edit = useSelector((state) => state.apprenantReducer.edit);
 
   // champs du formulaire apprenant
   let [NewApprenant, setNewApprenant] = useState({
@@ -45,7 +46,7 @@ function Add() {
     tel: "",
     date: "",
     niveau: 0,
-    id_promotion_cohorte: 0,
+    id_promotion: 0,
     image_name:false,
     competences: [],
   });
@@ -79,6 +80,7 @@ function Add() {
       return;
     }
 
+    let suivi_apprenat_admin_token = localStorage.getItem("suivi_apprenat_admin_token");
 
     // verifier si l image est vide
     if (Object.keys(image).length === 0) {
@@ -94,10 +96,10 @@ function Add() {
       };
     }
 
-    if (NewApprenant.id_promotion_cohorte==0) {
+    if (NewApprenant.id_promotion==0) {
       notify("tr", "danger", "Veuillez choisir la promotion");
     } else {
-      dispatch(postApprenants("ADD_APPRENANT", NewApprenant));
+      dispatch(postApprenants("ADD_APPRENANT", NewApprenant, suivi_apprenat_admin_token));
       notify("tr", "success", "Données enregistrées");
     }
     console.log(NewApprenant);
@@ -105,9 +107,27 @@ function Add() {
   };
 
   useEffect(() => {
+    let suivi_apprenat_admin_token = localStorage.getItem("suivi_apprenat_admin_token");
+
+    if(Object.keys(apprenant_edit).length > 0){
+      setNewApprenant({
+        nom: apprenant_edit.nom,
+        post_nom: apprenant_edit.post_nom,
+        prenom: apprenant_edit.prenom,
+        email: apprenant_edit.email,
+        sex: apprenant_edit.sex,
+        adress: apprenant_edit.adress,
+        tel: apprenant_edit.tel,
+        date: apprenant_edit.date,
+        niveau: apprenant_edit.niveau,
+        id_promotion: apprenant_edit.promotions,
+        image:apprenant_edit.photo,
+        competences: apprenant_edit.competences,
+      });
+    }
     if (competences.length <= 0)
-      dispatch(getCompetence("GET_COMPETENCE_SELECT"));
-    if (promotions.length <= 0) dispatch(getPromotion("GET_PROMOTION"));
+      dispatch(getCompetence("GET_COMPETENCE", suivi_apprenat_admin_token));
+    if (promotions.length <= 0) dispatch(getPromotion("GET_PROMOTION", suivi_apprenat_admin_token));
   }, [dispatch]);
 
   const formField = (labelName, name, type, required) => {
@@ -135,7 +155,11 @@ function Add() {
           <Col md="8">
             <Card>
               <Card.Header>
-                <Card.Title as="h4">Ajouter Apprenant</Card.Title>
+                <Card.Title as="h2">
+                  
+                    {Object.keys(apprenant_edit).length > 0?"Modifier Apprenant":"Ajouter Apprenant"}
+                  
+                  </Card.Title>
               </Card.Header>
               <Card.Body>
                 <Form onSubmit={sendForm} noValidate validated={validated}>
@@ -216,16 +240,16 @@ function Add() {
                         <Form.Control
                           disabled={formStatus}
                           as="select"
-                          name="id_promotion_cohorte"
-                          value={NewApprenant.id_promotion_cohorte}
+                          name="id_promotion"
+                          value={NewApprenant.id_promotion}
                           onChange={handleChange}
                           required
                         >
                           <option value={0}> Selectionner promotion</option>
                           {promotions.map((item) => (
                             <option
-                              value={item.id_promotion_cohorte}
-                              key={item.id_promotion_cohorte}
+                              value={item.id_promotion}
+                              key={item.id_promotion}
                             >
                               {item.nom_promotion}
                             </option>
@@ -270,4 +294,4 @@ function Add() {
   );
 }
 
-export default Add;
+export default AddApprenant;

@@ -1,4 +1,7 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
+import { useSelector, useDispatch } from 'react-redux';
+import { useLocation, NavLink } from "react-router-dom";
+import {getPromotion} from "../store/http/promotionAxios";
 
 // react-bootstrap components
 import {
@@ -7,134 +10,66 @@ import {
   Card,
   Navbar,
   Nav,
+  Table,
   Container,
   Row,
   Col,
 } from "react-bootstrap";
 
+
 function Promotions() {
+  const promotions = useSelector(state => state.promotionReducer.list);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    let suivi_apprenat_admin_token = localStorage.getItem("suivi_apprenat_admin_token");
+    dispatch(getPromotion("GET_PROMOTION", suivi_apprenat_admin_token));
+  }, [dispatch]);
+
   return (
     <>
       <Container fluid>
         <Row>
           <Col md="12">
-            <Card>
+            <Card className="strpied-tabled-with-hover">
               <Card.Header>
-                <Card.Title as="h4">Light Bootstrap Table Heading</Card.Title>
-                <p className="card-category">
-                  Created using Montserrat Font Family
-                </p>
+                <Card.Title as="h4">
+                <div className="d-flex justify-content-between">
+                    <div>Liste des Promotions</div>
+                    <div>
+                      <Button variant="light" className="mx-1">
+                        <NavLink
+                          to="/admin/competence/add"
+                          className="nav-link"
+                          activeClassName="active"
+                        >
+                          <i className="fas fa-plus"></i>
+                        </NavLink>
+                      </Button>
+                    </div>
+                  </div>
+                </Card.Title>
               </Card.Header>
-              <Card.Body>
-                <div className="typography-line">
-                  <h1>
-                    <span>Header 1</span>
-                    The Life of Light Bootstrap Dashboard React
-                  </h1>
-                </div>
-                <div className="typography-line">
-                  <h2>
-                    <span>Header 2</span>
-                    The Life of Light Bootstrap Dashboard React
-                  </h2>
-                </div>
-                <div className="typography-line">
-                  <h3>
-                    <span>Header 3</span>
-                    The Life of Light Bootstrap Dashboard React
-                  </h3>
-                </div>
-                <div className="typography-line">
-                  <h4>
-                    <span>Header 4</span>
-                    The Life of Light Bootstrap Dashboard React
-                  </h4>
-                </div>
-                <div className="typography-line">
-                  <h5>
-                    <span>Header 5</span>
-                    The Life of Light Bootstrap Dashboard React
-                  </h5>
-                </div>
-                <div className="typography-line">
-                  <h6>
-                    <span>Header 6</span>
-                    The Life of Light Bootstrap Dashboard React
-                  </h6>
-                </div>
-                <div className="typography-line">
-                  <p>
-                    <span>Paragraph</span>I will be the leader of a company that
-                    ends up being worth billions of dollars, because I got the
-                    answers. I understand culture. I am the nucleus. I think
-                    that’s a responsibility that I have, to push possibilities,
-                    to show people, this is the level that things could be at.
-                  </p>
-                </div>
-                <div className="typography-line">
-                  <span>Quote</span>
-                  <blockquote>
-                    <p className="blockquote blockquote-primary">
-                      "I will be the leader of a company that ends up being
-                      worth billions of dollars, because I got the answers. I
-                      understand culture. I am the nucleus. I think that’s a
-                      responsibility that I have, to push possibilities, to show
-                      people, this is the level that things could be at."{" "}
-                      <br></br>
-                      <br></br>
-                      <small>- Noaa</small>
-                    </p>
-                  </blockquote>
-                </div>
-                <div className="typography-line">
-                  <span>Muted Text</span>
-                  <p className="text-muted">
-                    I will be the leader of a company that ends up being worth
-                    billions of dollars, because I got the answers...
-                  </p>
-                </div>
-                <div className="typography-line">
-                  <span>Primary Text</span>
-                  <p className="text-primary">
-                    I will be the leader of a company that ends up being worth
-                    billions of dollars, because I got the answers...
-                  </p>
-                </div>
-                <div className="typography-line">
-                  <span>Info Text</span>
-                  <p className="text-info">
-                    I will be the leader of a company that ends up being worth
-                    billions of dollars, because I got the answers...
-                  </p>
-                </div>
-                <div className="typography-line">
-                  <span>Success Text</span>
-                  <p className="text-success">
-                    I will be the leader of a company that ends up being worth
-                    billions of dollars, because I got the answers...
-                  </p>
-                </div>
-                <div className="typography-line">
-                  <span>Warning Text</span>
-                  <p className="text-warning">
-                    I will be the leader of a company that ends up being worth
-                    billions of dollars, because I got the answers...
-                  </p>
-                </div>
-                <div className="typography-line">
-                  <span>Danger Text</span>
-                  <p className="text-danger">
-                    I will be the leader of a company that ends up being worth
-                    billions of dollars, because I got the answers...
-                  </p>
-                </div>
-                <div className="typography-line">
-                  <h2>
-                    <span>Small Tag</span>
-                    Header with small subtitle <br></br>
-                    <small>Use "small" tag for the headers</small>
-                  </h2>
-                </div>
+              <Card.Body className="table-full-width table-responsive px-0">
+              <table className="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">NOM</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              promotions.map((item, index)=>(
+                <tr key={item.value}>
+                <th scope="row">{index+1}</th>
+                <td>{item.nom_promotion}-{item.annee_promotion}</td>
+              </tr>    
+              ))
+            }
+            
+          </tbody>
+        </table>
               </Card.Body>
             </Card>
           </Col>
