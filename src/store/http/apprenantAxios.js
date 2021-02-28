@@ -19,7 +19,6 @@ export const getApprenants = (action, token) => async (dispatch) => {
       type: action,
       payload: apprenants,
     });
-    //console.log(res.data.data);
   } catch (err) {
     console.error(err.toString());
   }

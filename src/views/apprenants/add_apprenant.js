@@ -46,7 +46,7 @@ function AddApprenant() {
     tel: "",
     date: "",
     niveau: 0,
-    id_promotion_cohorte: 0,
+    id_promotion: 0,
     image_name:false,
     competences: [],
   });
@@ -80,6 +80,7 @@ function AddApprenant() {
       return;
     }
 
+    let suivi_apprenat_admin_token = localStorage.getItem("suivi_apprenat_admin_token");
 
     // verifier si l image est vide
     if (Object.keys(image).length === 0) {
@@ -95,10 +96,10 @@ function AddApprenant() {
       };
     }
 
-    if (NewApprenant.id_promotion_cohorte==0) {
+    if (NewApprenant.id_promotion==0) {
       notify("tr", "danger", "Veuillez choisir la promotion");
     } else {
-      dispatch(postApprenants("ADD_APPRENANT", NewApprenant));
+      dispatch(postApprenants("ADD_APPRENANT", NewApprenant, suivi_apprenat_admin_token));
       notify("tr", "success", "Données enregistrées");
     }
     console.log(NewApprenant);
@@ -119,7 +120,7 @@ function AddApprenant() {
         tel: apprenant_edit.tel,
         date: apprenant_edit.date,
         niveau: apprenant_edit.niveau,
-        id_promotion_cohorte: apprenant_edit.promotions,
+        id_promotion: apprenant_edit.promotions,
         image:apprenant_edit.photo,
         competences: apprenant_edit.competences,
       });
@@ -239,16 +240,16 @@ function AddApprenant() {
                         <Form.Control
                           disabled={formStatus}
                           as="select"
-                          name="id_promotion_cohorte"
-                          value={NewApprenant.id_promotion_cohorte}
+                          name="id_promotion"
+                          value={NewApprenant.id_promotion}
                           onChange={handleChange}
                           required
                         >
                           <option value={0}> Selectionner promotion</option>
                           {promotions.map((item) => (
                             <option
-                              value={item.id_promotion_cohorte}
-                              key={item.id_promotion_cohorte}
+                              value={item.id_promotion}
+                              key={item.id_promotion}
                             >
                               {item.nom_promotion}
                             </option>
