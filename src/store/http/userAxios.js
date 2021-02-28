@@ -14,6 +14,20 @@ export const get_users = (action) => async (dispatch) => {
   }
 };
 
+export const setlogin = (action) => async (dispatch) => {
+  try {
+    const res = await axios.get(`${serverHttp}/api/users/login`);
+    localStorage.setItem("suivi_apprenat_admin_token", res.data.data.token);
+    dispatch({
+      type: action,
+      payload: res.data.data,
+    });
+  } catch (err) {
+    //console.log(res.data.data);
+    console.error(err.toString());
+  }
+};
+
 export const get_current_users = (action) => async (dispatch) => {
   try {
     const res = await axios.get(`${serverHttp}/api/users/current`);

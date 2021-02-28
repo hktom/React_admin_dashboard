@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Container, Form, Row, Col, Button } from "react-bootstrap";
 import { useLocation, NavLink, useHistory } from "react-router-dom";
 import NotificationAlert from "react-notification-alert";
+import {setlogin} from "../store/http/userAxios";
 
 function Login() {
   const notificationAlertRef = useRef(null);
@@ -22,7 +23,7 @@ function Login() {
     };
     notificationAlertRef.current.notificationAlert(options);
   };
-  //const userReducer = useSelector((state) => state.userReducer.current_user);
+  const token = useSelector((state) => state.userReducer.token);
   const dispatch = useDispatch();
   let history = useHistory();
   const [validated, setValidated] = useState(false);
@@ -41,11 +42,11 @@ function Login() {
       return;
     }
 
-    dispatch(postPromotion("ADD_Promotion", NewPromotion));
-    notify("tr", "success", "Données enregistrées");
+    dispatch(setlogin("LOGIN_USER", userInfo)).then(()=>{
+      console.log(token);
+    });
+    // notify("tr", "success", "Données enregistrées");
     setFormStatus(false);
-
-    console.log(NewPromotion);
   };
 
   useEffect(() => {
