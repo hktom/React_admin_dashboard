@@ -27,7 +27,13 @@ function Admin() {
           />
         );
       } else {
-        return null;
+        return (
+          <Route
+          path={prop.path}
+          render={(props) => <prop.component {...props} />}
+          key={key}
+        />
+        );
       }
     });
   };
@@ -44,6 +50,25 @@ function Admin() {
       element.parentNode.removeChild(element);
     }
   }, [location]);
+
+  const getBrandText = () => {
+    for (let i = 0; i < routes.length; i++) {
+      if (location.pathname.indexOf(routes[i].layout + routes[i].path) !== -1) {
+        return routes[i].name;
+      }
+    }
+    return "Login";
+  };
+
+  if(getBrandText()=="Login"){
+    return(
+      <>
+      <div className="d-flex align-items-center align-item-center" ref={mainPanel}>
+          <Switch>{getRoutes(routes)}</Switch>
+      </div>
+      </>
+    );
+  }
   return (
     <>
       <div className="wrapper">
@@ -53,17 +78,9 @@ function Admin() {
           <div className="content">
             <Switch>{getRoutes(routes)}</Switch>
           </div>
-          <Footer />
         </div>
       </div>
-      {/* <FixedPlugin
-        hasImage={hasImage}
-        setHasImage={() => setHasImage(!hasImage)}
-        color={color}
-        setColor={(color) => setColor(color)}
-        image={image}
-        setImage={(image) => setImage(image)}
-      /> */}
+      <Footer />
     </>
   );
 }

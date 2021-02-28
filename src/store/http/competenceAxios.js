@@ -39,3 +39,43 @@ export const get_competence_apprenant = (action) => async (dispatch) => {
     console.error(err.toString());
   }
 };
+
+
+export const postCompetence = (action, payload) => async (dispatch) => {
+  try {
+    const res = await axios.post(`${serverHttp}/api/competence`, payload);
+    dispatch({
+      type: action,
+      payload: res.data.data,
+    });
+    //console.log(res.data.data);
+  } catch (err) {
+    console.error(err.toString());
+  }
+};
+
+export const editCompetence = (action, payload) => async (dispatch) => {
+  try {
+    const res = await axios.put(`${serverHttp}/api/competence`, payload);
+    dispatch({
+      type: action,
+      payload: res.data.data,
+    });
+    //console.log(res.data.data);
+  } catch (err) {
+    console.error(err.toString());
+  }
+};
+
+export const deleteCompetence = (action, payload) => async (dispatch) => {
+  try {
+    const res = await axios.delete(`${serverHttp}/api/competence`, payload);
+    dispatch({
+      type: action,
+      payload: res.data.data,
+    });
+    //console.log(res.data.data);
+  } catch (err) {
+    console.error(err.toString());
+  }
+};

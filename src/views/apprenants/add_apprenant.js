@@ -9,7 +9,7 @@ import NotificationAlert from "react-notification-alert";
 import ImageUploader from "../../components/imageUploader";
 import { postApprenants } from "../../store/http/apprenantAxios";
 
-function Add() {
+function AddApprenant() {
   const notificationAlertRef = useRef(null);
   const notify = (place, status, message) => {
     var type = status;
@@ -33,6 +33,7 @@ function Add() {
   const dispatch = useDispatch();
   const [validated, setValidated] = useState(false);
   const [formStatus, setFormStatus]=useState(false);
+  const apprenant_edit = useSelector((state) => state.apprenantReducer.edit);
 
   // champs du formulaire apprenant
   let [NewApprenant, setNewApprenant] = useState({
@@ -105,6 +106,22 @@ function Add() {
   };
 
   useEffect(() => {
+    if(Object.keys(apprenant_edit).length > 0){
+      setNewApprenant({
+        nom: apprenant_edit.nom,
+        post_nom: apprenant_edit.post_nom,
+        prenom: apprenant_edit.prenom,
+        email: apprenant_edit.email,
+        sex: apprenant_edit.sex,
+        adress: apprenant_edit.adress,
+        tel: apprenant_edit.tel,
+        date: apprenant_edit.date,
+        niveau: apprenant_edit.niveau,
+        id_promotion_cohorte: apprenant_edit.promotions,
+        image:apprenant_edit.photo,
+        competences: apprenant_edit.competences,
+      });
+    }
     if (competences.length <= 0)
       dispatch(getCompetence("GET_COMPETENCE_SELECT"));
     if (promotions.length <= 0) dispatch(getPromotion("GET_PROMOTION"));
@@ -135,7 +152,11 @@ function Add() {
           <Col md="8">
             <Card>
               <Card.Header>
-                <Card.Title as="h4">Ajouter Apprenant</Card.Title>
+                <Card.Title as="h4">
+                  <h2>
+                    {Object.keys(apprenant_edit).length > 0?"Modifier Apprenant":"Ajouter Apprenant"}
+                  </h2>
+                  </Card.Title>
               </Card.Header>
               <Card.Body>
                 <Form onSubmit={sendForm} noValidate validated={validated}>
@@ -270,4 +291,4 @@ function Add() {
   );
 }
 
-export default Add;
+export default AddApprenant;

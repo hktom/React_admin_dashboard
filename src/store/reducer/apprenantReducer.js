@@ -1,6 +1,9 @@
 let data = {
   list: [],
-  current: [],
+  show: {},
+  edit: [],
+  search: [],
+  delete: {},
   status: 0,
 };
 
@@ -11,6 +14,11 @@ const apprenantReducer = (state = data, action) => {
         ...state,
         list: action.payload,
         status: action.status,
+      };
+    case "SHOW_APPRENANT":
+      return {
+        ...state,
+        show: action.payload,
       };
 
     case "SET_STATUS_PENDING":
@@ -40,13 +48,20 @@ const apprenantReducer = (state = data, action) => {
     case "FIND_APPRENANT":
       return {
         ...state,
-        current: action.payload,
+        search: action.payload,
+        status: action.status,
       };
 
     case "ADD_APPRENANT":
       return {
         ...state,
-        current: action.payload,
+        //current: action.payload,
+        status: action.status,
+      };
+    case "EDIT_APPRENANT":
+      return {
+        ...state,
+        edit: action.payload,
         status: action.status,
       };
 
