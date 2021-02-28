@@ -49,7 +49,8 @@ function Apprenants() {
   };
 
   useEffect(() => {
-    if (data.length <= 0) dispatch(getApprenants("GET_APPRENANT"));
+    let suivi_apprenat_admin_token = localStorage.getItem("suivi_apprenat_admin_token");
+    if (data.length <= 0) dispatch(getApprenants("GET_APPRENANT", suivi_apprenat_admin_token));
   }, [dispatch]);
 
   return (

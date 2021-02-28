@@ -2,7 +2,7 @@ import { Button, Card, Form, Container, Row, Col } from "react-bootstrap";
 
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { postCompetence } from "../../store/http/competenceAxios";
+import { postCompetence, getCompetence } from "../../store/http/competenceAxios";
 import NotificationAlert from "react-notification-alert";
 
 function AddCompetence() {
@@ -28,6 +28,7 @@ function AddCompetence() {
   const [validated, setValidated] = useState(false);
   const [formStatus, setFormStatus] = useState(false);
   const competence_edit = useSelector((state) => state.competenceReducer.edit);
+  const status = useSelector((state) => state.competenceReducer.status);
 
   let [NewCompetence, setNewCompetence] = useState({ nom: "" });
 
@@ -49,8 +50,20 @@ function AddCompetence() {
       return;
     }
 
-    dispatch(postCompetence("ADD_COMPETENCE", NewCompetence));
-    notify("tr", "success", "Données enregistrées");
+    let suivi_apprenat_admin_token = localStorage.getItem("suivi_apprenat_admin_token");
+
+    dispatch(postCompetence("POST_COMPETENCE", NewCompetence, suivi_apprenat_admin_token)).then(()=>{
+      console.log(status);
+      if(status==200) {
+        notify("tr", "success", "Données enregistrées");
+        setNewCompetence({ nom: '' });
+        dispatch(getCompetence("GET_COMPETENCE", suivi_apprenat_admin_token));
+      }else
+      {
+        notify("tr", "danger", "Une erreur s'est produite");
+      }
+    });
+    
     setFormStatus(false);
 
     console.log(NewCompetence);
@@ -92,11 +105,11 @@ function AddCompetence() {
             <Card>
               <Card.Header>
                 <Card.Title as="h4">
-                  <h2>
-                    {Object.keys(apprenant_edit).length > 0
+                  
+                    {Object.keys(competence_edit).length > 0
                       ? "Modifier Apprenant"
                       : "Ajouter Competence"}
-                  </h2>
+                  
                 </Card.Title>
               </Card.Header>
               <Card.Body>

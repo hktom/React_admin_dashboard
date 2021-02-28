@@ -9,19 +9,20 @@ import {Container} from "react-bootstrap";
 function Dashboard() {
 
   const apprenants = useSelector(state => state.apprenantReducer.list);
-  const competences = useSelector(state => state.competenceReducer.list);
+  const competences = useSelector(state => state.competenceReducer.list_with_apprenant);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getApprenants('GET_APPRENANT'));
-    dispatch(get_competence_apprenant('GET_COMPETENCE'));
+    let suivi_apprenat_admin_token = localStorage.getItem("suivi_apprenat_admin_token");
+    dispatch(getApprenants('GET_APPRENANT', suivi_apprenat_admin_token));
+    dispatch(get_competence_apprenant('GET_COMPETENCE_WITH_APPRENANT', suivi_apprenat_admin_token));
   }, [dispatch]);
 
   return (
     <>
       <Container fluid>
         <img
-          style={{ width: "100%", height: 500, objectFit: "cover" }}
+          style={{ width: "100%", height: 290, objectFit: "cover" }}
           src={require("../assets/img/dashboard.png").default}
           alt="..."
         />

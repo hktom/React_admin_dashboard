@@ -12,12 +12,6 @@ import Login from "./views/Login.js";
 
 const dashboardRoutes = [
   {
-    path: "/admin",
-    name: "Login",
-    sub: true,
-    component: Login,
-  },
-  {
     path: "/dashboard",
     name: "Dashboard",
     icon: "fas fa-tachometer-alt",
@@ -103,7 +97,14 @@ const dashboardRoutes = [
     component: AddUser,
     layout: "/admin",
     sub: true,
-  }
+  },
+  // login
+  {
+    path: "/admin",
+    name: "Login",
+    sub: true,
+    component: Login,
+  },
 ];
 
 export default dashboardRoutes;

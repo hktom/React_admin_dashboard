@@ -43,17 +43,16 @@ function Login() {
     }
 
     dispatch(setlogin("LOGIN_USER", userInfo)).then(()=>{
-      console.log(token);
+      if(token) history.push("/apprenant/dashboard");
+      else notify("tr", "danger", "Ce compte n'existe pas");
     });
-    // notify("tr", "success", "Données enregistrées");
     setFormStatus(false);
   };
 
   useEffect(() => {
-    let token = localStorage.getItem("suivi_apprenat_admin_token");
-    console.log("suivi_apprenat_admin_token", token);
-    if (token) {
-      dispatch({ type: "SET_TOKEN", payload: token });
+    let suivi_apprenat_admin_token = localStorage.getItem("suivi_apprenat_admin_token");
+    if (suivi_apprenat_admin_token) {
+      dispatch({ type: "SET_TOKEN", payload: suivi_apprenat_admin_token });
       history.push("/apprenant/dashboard");
     }
   }, [dispatch]);
@@ -77,7 +76,7 @@ function Login() {
                     <Form.Control
                       disabled={formStatus}
                       required
-                      onChange={(e) => setUserInfo({ email: e.target.value })}
+                      onChange={(e) => setUserInfo({...userInfo, email: e.target.value})}
                       type="email"
                     ></Form.Control>
                     <Form.Control.Feedback type="invalid">
@@ -92,7 +91,7 @@ function Login() {
                       disabled={formStatus}
                       maxLength="8"
                       required
-                      onChange={(e) => setUserInfo({ pwd: e.target.value })}
+                      onChange={(e) => setUserInfo({...userInfo, pwd: e.target.value})}
                       type="password"
                     ></Form.Control>
                   </Form.Group>

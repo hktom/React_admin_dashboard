@@ -4,8 +4,8 @@ import { Container } from "react-bootstrap";
 class Footer extends Component {
   render() {
     return (
-      <footer className="footer px-0 px-lg-3">
-        <Container fluid>
+      <footer className="footer px-0 px-lg-3" style={{padding:'0px !important'}}>
+        <Container fluid style={{padding:'0px !important'}}>
           <div className="d-flex" style={{ width: "100%" }}>
             <div
               className="py-4"

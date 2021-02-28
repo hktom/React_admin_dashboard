@@ -32,6 +32,11 @@ function Header() {
     return "Brand";
   };
 
+  const logout=()=>{
+    localStorage.removeItem("suivi_apprenat_admin_token");
+    history.push("/admin");
+  }
+
   useEffect(() => {
     if (!token) {
       history.push("/admin");
@@ -49,13 +54,13 @@ function Header() {
           >
             <i className="fas fa-ellipsis-v"></i>
           </Button>
-          <Navbar.Brand
+          {/* <Navbar.Brand
             href="#home"
             onClick={(e) => e.preventDefault()}
             className="mr-2"
           >
             {getBrandText()}
-          </Navbar.Brand>
+          </Navbar.Brand> */}
         </div>
         <Navbar.Toggle aria-controls="basic-navbar-nav" className="mr-2">
           <span className="navbar-toggler-bar burger-lines"></span>
@@ -187,11 +192,10 @@ function Header() {
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown> */}
-            <Nav.Item>
+            <Nav.Item onClick={() => logout()}>
               <Nav.Link
                 className="m-0"
                 href="#pablo"
-                onClick={(e) => e.preventDefault()}
               >
                 <span className="no-icon">Log out</span>
               </Nav.Link>

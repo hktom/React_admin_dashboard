@@ -28,7 +28,7 @@ function AddApprenant() {
     notificationAlertRef.current.notificationAlert(options);
   };
 
-  const competences = useSelector((state) => state.competenceReducer.select);
+  const competences = useSelector((state) => state.competenceReducer.list);
   const promotions = useSelector((state) => state.promotionReducer.list);
   const dispatch = useDispatch();
   const [validated, setValidated] = useState(false);
@@ -106,6 +106,8 @@ function AddApprenant() {
   };
 
   useEffect(() => {
+    let suivi_apprenat_admin_token = localStorage.getItem("suivi_apprenat_admin_token");
+
     if(Object.keys(apprenant_edit).length > 0){
       setNewApprenant({
         nom: apprenant_edit.nom,
@@ -123,8 +125,8 @@ function AddApprenant() {
       });
     }
     if (competences.length <= 0)
-      dispatch(getCompetence("GET_COMPETENCE_SELECT"));
-    if (promotions.length <= 0) dispatch(getPromotion("GET_PROMOTION"));
+      dispatch(getCompetence("GET_COMPETENCE", suivi_apprenat_admin_token));
+    if (promotions.length <= 0) dispatch(getPromotion("GET_PROMOTION", suivi_apprenat_admin_token));
   }, [dispatch]);
 
   const formField = (labelName, name, type, required) => {
@@ -152,10 +154,10 @@ function AddApprenant() {
           <Col md="8">
             <Card>
               <Card.Header>
-                <Card.Title as="h4">
-                  <h2>
+                <Card.Title as="h2">
+                  
                     {Object.keys(apprenant_edit).length > 0?"Modifier Apprenant":"Ajouter Apprenant"}
-                  </h2>
+                  
                   </Card.Title>
               </Card.Header>
               <Card.Body>

@@ -2,6 +2,7 @@ let data = {
     list: [],
     current_user: [],
     token:false,
+    status:0,
   };
   
   const userReducer = (state = data, action) => {
@@ -34,7 +35,7 @@ let data = {
           return {
             ...state,
             current_user: action.payload,
-            token:action.token
+            token:action.token,
           };
 
           case "SET_TOKEN":

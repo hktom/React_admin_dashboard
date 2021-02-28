@@ -1,6 +1,8 @@
 let data = {
     list: [],
     current: [],
+    edit:{},
+    status:0
   };
   
   const promotionReducer = (state = data, action) => {
@@ -10,6 +12,21 @@ let data = {
         return {
           ...state,
           list: action.payload,
+        };
+      case "POST_PROMOTION":
+        return {
+          ...state,
+          status: action.payload,
+        };
+      case "PUT_PROMOTION":
+        return {
+          ...state,
+          status: action.payload,
+        };
+      case "DROP_PROMOTION":
+        return {
+          ...state,
+          status: action.payload,
         };
   
       default:
