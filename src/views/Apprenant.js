@@ -13,32 +13,44 @@ import {
 } from "react-bootstrap";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getApprenants } from "../store/http/apprenantAxios";
-import { useLocation, NavLink } from "react-router-dom";
+import { getApprenants, deleteApprenants } from "../store/http/apprenantAxios";
+import { delete_apprenant_competence } from "../store/http/apprenant_competence";
+import { useLocation, NavLink, useHistory } from "react-router-dom";
 
 function Apprenants() {
   const data = useSelector((state) => state.apprenantReducer.list);
   const dispatch = useDispatch();
-  const [bulkDelete, setBulkDelete]=useState([]);
+  const [bulkDelete, setBulkDelete] = useState([]);
+  let history = useHistory();
 
-  const handleCheck=(e)=>{
-    
-    if(bulkDelete.includes(e.target.name)){
-      setBulkDelete(bulkDelete.filter((item)=>item!=e.target.name));
-    }
-    else
-    {
+  const show=(item)=>{
+    dispatch({type:'SHOW_APPRENANT', payload:item});
+    history.push("/apprenant/show");
+  }
+
+  const handleCheck = (e) => {
+    if (bulkDelete.includes(e.target.name)) {
+      setBulkDelete(bulkDelete.filter((item) => item != e.target.name));
+    } else {
       setBulkDelete([...bulkDelete, e.target.name]);
-
     }
-  }
+  };
 
-  const handleDelete=()=>{
-    console.log(bulkDelete);
-  }
+  const handleDelete = () => {
+    if (bulkDelete.length > 0) {
+      dispatch(
+        delete_apprenant_competence("DELETE_COMPETENCE", bulkDelete)
+      ).then(() => {
+        dispatch(deleteApprenants("DELETE_APPRENANT")).then(() => {
+          dispatch(getApprenants("GET_APPRENANT"));
+        });
+      });
+    }
+  };
 
   useEffect(() => {
-    if (data.length <= 0) dispatch(getApprenants("GET_APPRENANT"));
+    let suivi_apprenat_admin_token = localStorage.getItem("suivi_apprenat_admin_token");
+    if (data.length <= 0) dispatch(getApprenants("GET_APPRENANT", suivi_apprenat_admin_token));
   }, [dispatch]);
 
   return (
@@ -71,14 +83,18 @@ function Apprenants() {
                         </NavLink>
                       </Button> */}
 
-                      <Button variant="danger" className="mx-1 py-5" onClick={handleDelete}>
-                      <NavLink
+                      <Button
+                        variant="danger"
+                        className="mx-1 py-5"
+                        onClick={handleDelete}
+                      >
+                        <NavLink
                           to="#"
                           className="nav-link"
                           activeClassName="active"
                         >
                           <i className="fas fa-trash"></i>
-                          </NavLink>
+                        </NavLink>
                       </Button>
                     </div>
                   </div>
@@ -99,16 +115,14 @@ function Apprenants() {
                   </thead>
                   <tbody>
                     {data.map((item) => (
-                      <tr key={item.id_apprenant} style={{cursor:'pointer'}}>
+                      <tr onClick={()=>show(item)} key={item.id_apprenant} style={{ cursor: "pointer" }}>
                         <td>
-                          
-                            <Form.Check
-                              name={item.id_apprenant}
-                              onChange={handleCheck}
-                              id={ `check_${item.id_apprenant}`}
-                              type="checkbox"
-                            />
-                          
+                          <Form.Check
+                            name={item.id_apprenant}
+                            onChange={handleCheck}
+                            id={`check_${item.id_apprenant}`}
+                            type="checkbox"
+                          />
                         </td>
                         <td>{item.nom_apprenant}</td>
                         <td>{item.postnom_apprenant}</td>

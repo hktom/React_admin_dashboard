@@ -1,6 +1,8 @@
 let data = {
     list: [],
-    current: [],
+    current_user: [],
+    token:false,
+    status:0,
   };
   
   const userReducer = (state = data, action) => {
@@ -11,24 +13,42 @@ let data = {
           ...state,
           list: action.payload,
         };
-  
-      case "FIND_USER":
+      case "GET_CURRENT_USER":
         return {
           ...state,
-          current: action.payload,
+          current_user: action.payload,
         };
   
-      case "ADD_USER":
+      case "UPDATE_PROFILE":
         return {
           ...state,
-          current: action.payload,
+          current_user: action.payload,
         };
-  
-      case "DELETE_USER":
-        return {
-          ...state,
-          current: [],
-        };
+
+        case "PROFILE_USER":
+          return {
+            ...state,
+            current_user: action.payload,
+          };
+
+        case "LOGIN_USER":
+          return {
+            ...state,
+            current_user: action.payload,
+            token:action.token,
+          };
+
+          case "SET_TOKEN":
+          return {
+            ...state,
+            token:action.payload
+          };
+
+          case "logout_USER":
+          return {
+            ...state,
+            token:'',
+          };
   
       default:
         return {

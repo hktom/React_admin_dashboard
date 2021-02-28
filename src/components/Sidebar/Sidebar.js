@@ -18,8 +18,8 @@ function Sidebar({ color, image, routes }) {
       />
       <div className="sidebar-wrapper">
         <div className="logo d-flex align-items-center justify-content-start">
-          <a
-            href="https://www.creative-tim.com?ref=lbd-sidebar"
+          <Nav.Link
+            href="/admin/dashboard"
             className="simple-text logo-mini mx-1"
           >
             <div className="pt-3">
@@ -28,7 +28,7 @@ function Sidebar({ color, image, routes }) {
                 alt="..."
               />
             </div>
-          </a>
+          </Nav.Link>
          
         </div>
         <Nav>
