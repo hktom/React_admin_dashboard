@@ -27,12 +27,14 @@ function AddPromotion() {
   const dispatch = useDispatch();
   const [validated, setValidated] = useState(false);
   const [formStatus, setFormStatus] = useState(false);
-  const Promotion_edit = useSelector((state) => state.PromotionReducer.edit);
+  const Promotion_edit = useSelector((state) => state.promotionReducer.edit);
 
-  let [NewPromotion, setNewPromotion] = useState({ nom: "", annee: ""});
+  let [NewPromotion, setNewPromotion] = useState({ nom_promotion: "", annee_promotion: ""});
 
   const handleChange = (e) => {
-    setNewPromotion({ nom: e.target.value });
+    let _temp={};
+    _temp[e.target.name]=e.target.value;
+    setNewPromotion({...NewPromotion, ..._temp});
   };
 
   // Fonction responsable pour l'envoit du formulaire
@@ -49,7 +51,9 @@ function AddPromotion() {
       return;
     }
 
-    dispatch(postPromotion("ADD_Promotion", NewPromotion));
+    let suivi_apprenat_admin_token = localStorage.getItem("suivi_apprenat_admin_token");
+
+    dispatch(postPromotion("ADD_Promotion", NewPromotion, suivi_apprenat_admin_token));
     notify("tr", "success", "Données enregistrées");
     setFormStatus(false);
 
@@ -92,18 +96,16 @@ function AddPromotion() {
             <Card>
               <Card.Header>
                 <Card.Title as="h4">
-                  <h2>
-                    {Object.keys(apprenant_edit).length > 0
+                    {Object.keys(Promotion_edit).length > 0
                       ? "Modifier Apprenant"
                       : "Ajouter Promotion"}
-                  </h2>
                 </Card.Title>
               </Card.Header>
               <Card.Body>
                 <Form onSubmit={sendForm} noValidate validated={validated}>
                   <Row>
                     <Col className="pr-1" md="5">
-                      {formField("Nom", "nom", "text", true)}
+                      {formField("Nom", "nom_promotion", "text", true)}
                     </Col>
                     
                     <Col className="pr-3" md="6">
@@ -113,7 +115,7 @@ function AddPromotion() {
                         disabled={formStatus}
                           required
                           as="select"
-                          name="annee"
+                          name="annee_promotion"
                           onChange={handleChange}
                           value={NewPromotion.annee}
                         >

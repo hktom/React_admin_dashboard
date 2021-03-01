@@ -1,6 +1,27 @@
 import axios from "axios";
 import { serverHttp } from "./config";
 
+export const searchApprenants = (action, payload, index) => async (
+  dispatch
+) => {
+  try {
+    let search = [];
+    search = payload.filter(
+      (item) =>
+        item.nom_apprenant.toLowerCase() == index.toLowerCase() ||
+        item.postnom_apprenant.toLowerCase() == index.toLowerCase() ||
+        item.prenom_apprenant.toLowerCase() == index.toLowerCase()
+    );
+
+    dispatch({
+      type: action,
+      payload: search,
+    });
+  } catch (err) {
+    console.error(err.toString());
+  }
+};
+
 export const getApprenants = (action, token) => async (dispatch) => {
   try {
     const res = await axios.get(`${serverHttp}/api/apprenant`, {

@@ -3,6 +3,7 @@ let data = {
     current_user: [],
     token:false,
     status:0,
+    
   };
   
   const userReducer = (state = data, action) => {

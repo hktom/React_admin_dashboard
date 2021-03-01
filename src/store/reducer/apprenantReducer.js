@@ -13,7 +13,18 @@ const apprenantReducer = (state = data, action) => {
       return {
         ...state,
         list: action.payload,
+        search: action.payload,
         status: action.status,
+      };
+    case "SEARCH_APPRENANT":
+      return {
+        ...state,
+        search: action.payload,
+      };
+    case "RESET_SEARCH":
+      return {
+        ...state,
+        search: action.payload,
       };
     case "SHOW_APPRENANT":
       return {

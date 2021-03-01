@@ -39,7 +39,7 @@ function Promotions() {
                     <div>
                       <Button variant="light" className="mx-1">
                         <NavLink
-                          to="/admin/competence/add"
+                          to="/admin/promotion/add"
                           className="nav-link"
                           activeClassName="active"
                         >
@@ -56,6 +56,7 @@ function Promotions() {
             <tr>
               <th scope="col">#</th>
               <th scope="col">NOM</th>
+              <th scope="col">ANNEE</th>
             </tr>
           </thead>
           <tbody>
@@ -63,7 +64,8 @@ function Promotions() {
               promotions.map((item, index)=>(
                 <tr key={item.value}>
                 <th scope="row">{index+1}</th>
-                <td>{item.nom_promotion}-{item.annee_promotion}</td>
+                <td>{item.nom_promotion}</td>
+                <td>{item.annee_promotion}</td>
               </tr>    
               ))
             }

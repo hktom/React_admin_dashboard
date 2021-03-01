@@ -13,20 +13,22 @@ import {
 } from "react-bootstrap";
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getApprenants, deleteApprenants } from "../store/http/apprenantAxios";
+import { getApprenants, deleteApprenants, searchApprenants } from "../store/http/apprenantAxios";
 import { delete_apprenant_competence } from "../store/http/apprenant_competence";
 import { useLocation, NavLink, useHistory } from "react-router-dom";
 
 function Apprenants() {
   const data = useSelector((state) => state.apprenantReducer.list);
+  const search = useSelector((state) => state.apprenantReducer.search);
   const dispatch = useDispatch();
   const [bulkDelete, setBulkDelete] = useState([]);
+  const [searchValue, setSearchValue]=useState("");
   let history = useHistory();
 
-  const show=(item)=>{
-    dispatch({type:'SHOW_APPRENANT', payload:item});
+  const show = (item) => {
+    dispatch({ type: "SHOW_APPRENANT", payload: item });
     history.push("/apprenant/show");
-  }
+  };
 
   const handleCheck = (e) => {
     if (bulkDelete.includes(e.target.name)) {
@@ -48,14 +50,41 @@ function Apprenants() {
     }
   };
 
+  const handleRecherche=(e)=>{
+    e.preventDefault();
+    console.log(searchValue);
+    if(searchValue!=""){
+      dispatch(searchApprenants("SEARCH_APPRENANT", data, searchValue))
+    }
+    else
+    {
+      dispatch({type:"RESET_SEARCH", payload:data});
+    }
+  }
+
   useEffect(() => {
-    let suivi_apprenat_admin_token = localStorage.getItem("suivi_apprenat_admin_token");
-    if (data.length <= 0) dispatch(getApprenants("GET_APPRENANT", suivi_apprenat_admin_token));
+    let suivi_apprenat_admin_token = localStorage.getItem(
+      "suivi_apprenat_admin_token"
+    );
+    if (data.length <= 0)
+      dispatch(getApprenants("GET_APPRENANT", suivi_apprenat_admin_token));
   }, [dispatch]);
 
   return (
     <>
       <Container fluid>
+        <div className="row w-100">
+          <div className="card w-100">
+            <Form className="w-100" onSubmit={handleRecherche}>
+              <Form.Row className="w-100">
+                <Col xs={12}>
+                  <Form.Control type="search" placeholder="Rechercher Apprenant" onChange={(e)=>setSearchValue(e.target.value)}/>
+                </Col>
+              </Form.Row>
+            </Form>
+          </div>
+        </div>
+
         <Row>
           <Col md="12">
             <Card className="strpied-tabled-with-hover">
@@ -114,8 +143,12 @@ function Apprenants() {
                     </tr>
                   </thead>
                   <tbody>
-                    {data.map((item) => (
-                      <tr onClick={()=>show(item)} key={item.id_apprenant} style={{ cursor: "pointer" }}>
+                    {search.map((item) => (
+                      <tr
+                        onClick={() => show(item)}
+                        key={item.id_apprenant}
+                        style={{ cursor: "pointer" }}
+                      >
                         <td>
                           <Form.Check
                             name={item.id_apprenant}
